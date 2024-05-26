@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.title }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+    <div>
+        <div class="d-inline-block p-2">
+            <img id="img_detail"  src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+        </div>    
+        <div class="d-inline-block p-2">
+            <h1>{{ product.name }}</h1>
+            <h2><a class='nav-link' href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+            <p>{{ product.description|linebreaks }}</p>
+            <p class="price">${{ product.price }}</p>
+            <form action="{% url 'cart_add' product.id %}" method="post">{% csrf_token %}
+                {{ cart_product_form }}
+                <input type="submit" value="Add to cart">
+            </form>
+        </div>
+    </div>
+{% endblock %}
